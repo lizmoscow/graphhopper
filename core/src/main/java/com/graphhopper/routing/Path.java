@@ -397,6 +397,9 @@ public class Path {
                 name = edge.getName();
                 annotation = encoder.getAnnotation(flags, tr);
 
+                if (annotation.isEmpty())
+                    annotation = new InstructionAnnotation(1, "speed: " + encoder.getSpeed(flags) + ", back = " + encoder.isBackward(flags));
+
                 if ((prevName == null) && (!isRoundabout)) // very first instruction (if not in Roundabout)
                 {
                     int sign = Instruction.CONTINUE_ON_STREET;
