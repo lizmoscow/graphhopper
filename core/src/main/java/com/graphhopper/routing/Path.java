@@ -64,6 +64,9 @@ public class Path {
     private double weight;
     private NodeAccess nodeAccess;
 
+    protected boolean singleNodeInstructions = false;
+    protected boolean addDetailsToAnnotation = false;
+
     public Path(Graph graph, Weighting weighting) {
         this.weight = Double.MAX_VALUE;
         this.graph = graph;
@@ -180,6 +183,22 @@ public class Path {
     public Path setWeight(double w) {
         this.weight = w;
         return this;
+    }
+
+    public boolean isSingleNodeInstructions() {
+        return singleNodeInstructions;
+    }
+
+    public void setSingleNodeInstructions(boolean singleNodeInstructions) {
+        this.singleNodeInstructions = singleNodeInstructions;
+    }
+
+    public boolean isAddDetailsToAnnotation() {
+        return addDetailsToAnnotation;
+    }
+
+    public void setAddDetailsToAnnotation(boolean addDetailsToAnnotation) {
+        this.addDetailsToAnnotation = addDetailsToAnnotation;
     }
 
     /**
@@ -397,6 +416,9 @@ public class Path {
                 name = edge.getName();
                 annotation = encoder.getAnnotation(flags, tr);
 
+                if (addDetailsToAnnotation && annotation.isEmpty())
+                    annotation = new InstructionAnnotation(1, "speed: " + encoder.getSpeed(flags) + ", back = " + encoder.isBackward(flags));
+
                 if ((prevName == null) && (!isRoundabout)) // very first instruction (if not in Roundabout)
                 {
                     int sign = Instruction.CONTINUE_ON_STREET;
@@ -477,7 +499,7 @@ public class Path {
                     prevName = name;
                     prevAnnotation = annotation;
 
-                } else if ((!name.equals(prevName)) || (!annotation.equals(prevAnnotation))) {
+                } else if (singleNodeInstructions || (!name.equals(prevName)) || (!annotation.equals(prevAnnotation))) {
                     prevOrientation = AC.calcOrientation(doublePrevLat, doublePrevLong, prevLat, prevLon);
                     double orientation = AC.calcOrientation(prevLat, prevLon, latitude, longitude);
                     orientation = AC.alignOrientation(prevOrientation, orientation);

@@ -118,6 +118,8 @@ public class Parameters {
          * a rectangular lat1,lon1,lat2,lon2
          */
         public static final String BLOCK_AREA = "block_area";
+        public static final String ADD_DETAILS_TO_ANNOTATION = "add_details_to_annotation";
+        public static final String SINGLE_NODE_INSTRUCTIONS = "single_node_instructions";
     }
 
     /**
