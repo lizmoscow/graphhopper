@@ -1010,6 +1010,11 @@ public class GraphHopper implements GraphHopperAPI {
 
                 altPaths = routingTemplate.calcPaths(queryGraph, tmpAlgoFactory, algoOpts);
 
+                for (Path path : altPaths) {
+                    path.setAddDetailsToAnnotation(hints.getBool(Routing.ADD_DETAILS_TO_ANNOTATION, false));
+                    path.setSingleNodeInstructions(hints.getBool(Routing.SINGLE_NODE_INSTRUCTIONS, false));
+                }
+
                 boolean tmpEnableInstructions = hints.getBool(Routing.INSTRUCTIONS, enableInstructions);
                 boolean tmpCalcPoints = hints.getBool(Routing.CALC_POINTS, calcPoints);
                 double wayPointMaxDistance = hints.getDouble(Routing.WAY_POINT_MAX_DISTANCE, 1d);
